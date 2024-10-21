@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# corvus: The Productivity Tool for Developers
+<p align="center">
+  <img src="https://img.shields.io/badge/next%20js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/-MongoDB-13aa52?style=for-the-badge&logo=mongodb&logoColor=white" />
+</p>
 
-## Getting Started
+## Introduction
+Have you ever been asked a "trivial" question by an intern? You're working on some huge features but you keep getting bothered by your juniors. You think to yourself, "Why can't they just do a few google searches and look around the codebase for their answers?".
 
-First, run the development server:
+**corvus** is a tool designed to address this issue.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+It is intended to accelerate the onboarding process and improve productivity of juniors.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**NOTE: This is a demo for Confluent's AI Day challenge and does not reflect the final product.**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## A Peek Inside
+**corvus** uses AI to mimic how someone reasons through a ticket and outputs its findings to the user. It works by identifying relevant internal information to the user's query and also searches for note-worthy external posts, blogs, and documentation if needed.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**corvus** is **NOT** a co-pilot. It is a productivity tool. It will not generate new code for you and is grounded by the existing documentation and codebase. This is an intended design.
 
-## Learn More
+**corvus** is built on a multi-step RAG pipeline to ensure accuracy and relevancy.
 
-To learn more about Next.js, take a look at the following resources:
+## What's Ahead
+As of now, **corvus** will be developed as an in-house tool. Expanding the tool to include multiple large codebases is not viable because of a lack of resources. I would like to keep my expenses free by leveraging the free tiers of the cloud services I use.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Goals:**
+- Integration with Jira, Confluence, and other sources to improve accuracy and relevancy.
+- Perfecting the RAG pipeline to improve AI reasoning abilities.
+- Testing to see how the AI performs under larger codebases and more sources.
