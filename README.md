@@ -1,4 +1,4 @@
-# corvus: The Productivity Tool for Developers
+# corvus
 <p align="center">
   <img src="https://img.shields.io/badge/next%20js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
   <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white" />
@@ -22,10 +22,10 @@ It is intended to accelerate the onboarding process and improve productivity of 
 
 **corvus** is built on a multi-step RAG pipeline to ensure accuracy and relevancy.
 
-## What's Ahead
-As of now, **corvus** will be developed as an in-house tool. Expanding the tool to include multiple large codebases is not viable because of a lack of resources. I would like to keep my expenses free by leveraging the free tiers of the cloud services I use.
+![alt text](ragpipeline.png?raw=true)
 
-**Goals:**
+## What's Ahead
 - Integration with Jira, Confluence, and other sources to improve accuracy and relevancy.
 - Perfecting the RAG pipeline to improve AI reasoning abilities.
+- Implementing more agents and agent frameworks from academia.
 - Testing to see how the AI performs under larger codebases and more sources.
