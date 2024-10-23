@@ -1,30 +1,35 @@
 "use client";
 
-import { getRepoContent } from "@/actions/getRepoContent";
-import { recursiveGetWholeRepoContent } from "@/actions/recursiveGetWholeRepoContent";
+import Chat from "@/components/chat";
 import SignIn from "@/components/signIn";
 import SignOut from "@/components/signOut";
-import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
-    <div>
-      <SignIn />
-      <SignOut />
-      <Button
-        onClick={async () => {
-          const rootRepoContent = await getRepoContent("corvus", "");
-          const data = await recursiveGetWholeRepoContent(
-            "corvus",
-            rootRepoContent,
-            {}
-          );
-          console.log(data);
-        }}
-      ></Button>
+    <div className="flex justify-center flex-col items-center mt-16 gap-4">
+      <Image src="/logo-modified.png" width={64} height={64} alt="logo" />
+      <span className="font-bold text-center">
+        This is a demo for Confluent&apos;s AI Day challenge to showcase the AI
+        pipeline. <br />
+        This does not reflect the final website or product. The tool works only
+        for information on the <i>corvus</i> codebase.
+        <br />
+        Access commits given an ID via
+        https://github.com/corvus-app/corvus/commits/[commitId]. Learn more @{" "}
+        <Link
+          href="https://github.com/corvus-app/corvus"
+          className="underline"
+          target="_blank"
+        >
+          GitHub
+        </Link>
+      </span>
+      <Chat />
+      <div className="flex gap-2">
+        <SignIn /> <SignOut />
+      </div>
     </div>
   );
 }
