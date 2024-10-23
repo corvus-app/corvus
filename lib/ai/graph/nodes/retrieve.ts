@@ -45,8 +45,9 @@ export async function retrieve(
   const traceback =
     "---SUB GOAL SELECTOR---\n" +
     "---SELECTED SUB GOAL: retrieve---\n" +
-    "---RETRIEVED DOCUMENTS---\n";
-  options + "\n";
+    "---RETRIEVED DOCUMENTS---\n" +
+    options +
+    "\n";
 
   return {
     options,

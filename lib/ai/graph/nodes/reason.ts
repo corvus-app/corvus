@@ -10,7 +10,9 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
  * @param {typeof GraphState.State} state The current state of the graph.
  * @returns {Promise<Partial<typeof GraphState.State>>} The new state object.
  */
-export async function reason(state: typeof GraphState.State) {
+export async function reason(
+  state: typeof GraphState.State
+): Promise<Partial<typeof GraphState.State>> {
   console.log("---REASON---");
   const prompt = ChatPromptTemplate.fromTemplate(
     `You are a thought within a chain of thoughts designed to mention relevant links, GitHub commits and documents that should help with the question. 
@@ -48,8 +50,9 @@ export async function reason(state: typeof GraphState.State) {
   const traceback =
     "---SUB GOAL SELECTOR---\n" +
     "---SELECTED SUB GOAL: reason---\n" +
-    "---GENERATE RATIONALES---\n";
-  options + "\n";
+    "---GENERATE RATIONALES---\n" +
+    options +
+    "\n";
 
   return {
     options,

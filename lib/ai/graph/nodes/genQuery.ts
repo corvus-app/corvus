@@ -65,8 +65,9 @@ export async function genQuery(
   const traceback =
     "---SUB GOAL SELECTOR---\n" +
     "---SELECTED SUB GOAL: genQuery---\n" +
-    "---WEB SEARCH---\n";
-  options + "\n";
+    "---WEB SEARCH---\n" +
+    options +
+    "\n";
 
   return {
     options,
