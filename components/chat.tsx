@@ -57,7 +57,7 @@ export default function Chat({
           id: Date.now(),
           text: results.output
             ? results.output
-            : "Question can't be answered. Please ask another question.",
+            : "Question cannot be answered. Please ask another question.",
           sender: "other" as const,
           traceback: results.tracebacks,
         };
@@ -190,7 +190,7 @@ export default function Chat({
           <DialogHeader>
             <DialogTitle>Answer Traceback</DialogTitle>
             <DialogDescription>
-              Here's all the steps that the AI took to get to your answer:
+              Here&apos;s all the steps that the AI took to get to your answer:
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="mt-4 max-h-[80vh]">
