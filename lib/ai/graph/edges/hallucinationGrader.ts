@@ -9,7 +9,7 @@ import { JsonOutputParser } from "@langchain/core/output_parsers";
  * @returns {"supported" | "not supported"}
  */
 export async function hallucinationGrader(state: typeof GraphState.State) {
-  console.log("---HALLLUCINATION GRADER---");
+  console.log("---HALLLUCINATION GRADER---\n");
 
   const prompt = ChatPromptTemplate.fromTemplate(
     `You are a thought within a chain of thoughts designed to mention relevant links, GitHub commits and documents that should help with the question.
@@ -37,10 +37,10 @@ export async function hallucinationGrader(state: typeof GraphState.State) {
   });
 
   if (grade.score === "yes") {
-    console.log("---DECISION: SUPPORTED, MOVE TO FINAL GRADE---");
+    console.log("---DECISION: SUPPORTED, MOVE TO FINAL GRADE---\n");
     return "supported";
   }
 
-  console.log("---DECISION: NOT SUPPORTED, GENERATE AGAIN---");
+  console.log("---DECISION: NOT SUPPORTED, GENERATE AGAIN---\n");
   return "not supported";
 }
