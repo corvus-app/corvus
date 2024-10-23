@@ -1,63 +1,94 @@
-import { Annotation, START, END } from "@langchain/langgraph";
+import { END, START, StateGraph, Annotation } from "@langchain/langgraph/web";
 import { Document } from "@langchain/core/documents";
-import { StateGraph } from "@langchain/langgraph";
 
 import { ChatGroq } from "@langchain/groq";
-
-import { answerableQuestion } from "./edges/answerableQuestion";
-import { decideToGenerate } from "./edges/decideToGenerate";
-import { generate } from "./nodes/generate";
-import { documentsGrader } from "./nodes/documentsGrader";
+import { subGoalSelector } from "./edges/subGoalSelector";
+import { reason } from "./nodes/reason";
+import { executionSelector } from "./nodes/executionSelector";
+import { generateRelevantDependencies } from "./nodes/generateRelevantDependencies";
 import { retrieve } from "./nodes/retrieve";
+import { queryAnalysis } from "./edges/queryAnalysis";
+import { genQuery } from "./nodes/genQuery";
+import { generateAnswer } from "./nodes/generateAnswer";
+import { unrelatedQuestion } from "./tracebackNodes/unrelatedQuestion";
+import { answerAndHallucinationsGrader } from "./edges/answerAndHallucinationGrader";
 import { rewriteQuery } from "./nodes/rewrite";
-import { gradeHallucinationsAndUsefulness } from "./edges/gradeHallucinationsAndUsefulness";
 
 export const model = new ChatGroq({
-  model: "llama-3.1-70b-versatile", // use more powerful model in production: llama-3.2-90b-text-preview
+  model: "llama-3.2-90b-text-preview",
   temperature: 0,
 });
 
+// Paper mentions to use 0.7 temperature for generating rationales
+export const rationaleModel = new ChatGroq({
+  model: "llama-3.2-90b-text-preview",
+  temperature: 0.7,
+});
+
 export const jsonModel = new ChatGroq({
-  model: "llama-3.1-8b-instant",
+  model: "llama-3.1-70b-versatile",
   temperature: 0,
 }).bind({ response_format: { type: "json_object" } });
 
-// This defines the agent state.
-// Returned documents from a node will override the current
-// "documents" value in the state object.
+export const summarizerModel = new ChatGroq({
+  model: "llama-3.1-8b-instant",
+  temperature: 0,
+});
+
+// Returned context from a node will be appended to the current "context" value in the state object.
+// Returned options from a node will override the current "options" value in the state object.
+// Returned documents from a node will override the current "documents" value in the state object.
+// Returned traceback from a node will be appended to the current "traceback" value in the state object.
 export const GraphState = Annotation.Root({
   question: Annotation<string>,
-  generation: Annotation<string>,
+  context: Annotation<string>({
+    reducer: (x, y) => x + "\n" + y,
+    default: () => "",
+  }),
+  technologies: Annotation<string>,
+  answer: Annotation<string>,
+  options: Annotation<string>({
+    reducer: (_, y) => y,
+    default: () => "",
+  }),
   documents: Annotation<Document[]>({
     reducer: (_, y) => y,
     default: () => [],
   }),
+  traceback: Annotation<string>({
+    reducer: (x, y) => x + "\n" + y,
+    default: () => "",
+  }),
 });
 
-// Define the graph
 const workflow = new StateGraph(GraphState)
-  // Define the nodes
+  .addNode("generateRelevantDependencies", generateRelevantDependencies)
+  .addNode("unrelatedQuestion", unrelatedQuestion)
   .addNode("retrieve", retrieve)
-  .addNode("documentsGrader", documentsGrader)
-  .addNode("generate", generate)
-  .addNode("rewriteQuery", rewriteQuery);
+  .addNode("executionSelector", executionSelector)
+  .addNode("generateAnswer", generateAnswer)
+  .addNode("rewrite", rewriteQuery)
+  .addNode("reason", reason)
+  .addNode("genQuery", genQuery);
 
-// Build graph
-workflow.addConditionalEdges(START, answerableQuestion, {
-  answerable: "retrieve",
-  not_answerable: END,
+workflow.addConditionalEdges(START, queryAnalysis, {
+  related: "generateRelevantDependencies",
+  not_related: "unrelatedQuestion",
 });
-workflow.addEdge("retrieve", "documentsGrader");
-workflow.addConditionalEdges("documentsGrader", decideToGenerate, {
-  rewriteQuery: "rewriteQuery",
-  generate: "generate",
-});
-workflow.addEdge("rewriteQuery", "retrieve");
-workflow.addConditionalEdges("generate", gradeHallucinationsAndUsefulness, {
-  not_supported: "rewriteQuery",
+workflow.addEdge("generateRelevantDependencies", "retrieve");
+workflow.addEdge("retrieve", "executionSelector");
+workflow.addEdge("executionSelector", "generateAnswer");
+workflow.addConditionalEdges("generateAnswer", answerAndHallucinationsGrader, {
   useful: END,
-  not_useful: "rewriteQuery",
+  not_useful: "rewrite",
+  not_supported: "rewrite",
 });
+workflow.addConditionalEdges("rewrite", subGoalSelector, {
+  reason: "reason",
+  retrieve: "retrieve",
+  genQuery: "genQuery",
+});
+workflow.addEdge("reason", "executionSelector");
+workflow.addEdge("genQuery", "executionSelector");
 
-// Compile
 export const app = workflow.compile();
