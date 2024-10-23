@@ -2,6 +2,7 @@ import { END, START, StateGraph, Annotation } from "@langchain/langgraph/web";
 import { Document } from "@langchain/core/documents";
 
 import { ChatGroq } from "@langchain/groq";
+
 import { subGoalSelector } from "./edges/subGoalSelector";
 import { reason } from "./nodes/reason";
 import { executionSelector } from "./nodes/executionSelector";
@@ -13,6 +14,7 @@ import { generateAnswer } from "./nodes/generateAnswer";
 import { unrelatedQuestion } from "./tracebackNodes/unrelatedQuestion";
 import { answerAndHallucinationsGrader } from "./edges/answerAndHallucinationGrader";
 import { rewriteQuery } from "./nodes/rewrite";
+import { answeredQuestion } from "./tracebackNodes/answeredQuestion";
 
 export const model = new ChatGroq({
   model: "llama-3.2-90b-text-preview",
@@ -67,6 +69,7 @@ const workflow = new StateGraph(GraphState)
   .addNode("retrieve", retrieve)
   .addNode("executionSelector", executionSelector)
   .addNode("generateAnswer", generateAnswer)
+  .addNode("answeredQuestion", answeredQuestion)
   .addNode("rewrite", rewriteQuery)
   .addNode("reason", reason)
   .addNode("genQuery", genQuery);
@@ -79,10 +82,11 @@ workflow.addEdge("generateRelevantDependencies", "retrieve");
 workflow.addEdge("retrieve", "executionSelector");
 workflow.addEdge("executionSelector", "generateAnswer");
 workflow.addConditionalEdges("generateAnswer", answerAndHallucinationsGrader, {
-  useful: END,
+  useful: "answeredQuestion",
   not_useful: "rewrite",
   not_supported: "rewrite",
 });
+workflow.addEdge("answeredQuestion", END);
 workflow.addConditionalEdges("rewrite", subGoalSelector, {
   reason: "reason",
   retrieve: "retrieve",
