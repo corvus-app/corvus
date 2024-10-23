@@ -20,7 +20,11 @@ It is intended to accelerate the onboarding process and improve productivity of 
 
 **corvus** is **NOT** a co-pilot. It is a productivity tool. It will not generate new code for you and is grounded by the existing documentation and codebase. This is an intended design.
 
-**corvus** is built on a multi-step RAG pipeline to ensure accuracy and relevancy.
+**corvus** is built on a multi-step RAG pipeline to ensure accuracy and relevancy. It uses ideas from the following papers:
+- [Corrective Retrieval Augmented Generation](https://arxiv.org/pdf/2401.15884)
+- [Self-RAG: Learning to Retrieve, Generate, and Critique Through Self-reflection](https://arxiv.org/pdf/2310.11511)
+- [Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity](https://arxiv.org/pdf/2403.14403)
+- [Can we further elicit reasoning in LLMs? Critic-guided Planning with Retrieval Augmentation for Solving Challenging Tasks](https://arxiv.org/pdf/2410.01428)
 
 ![alt text](ragpipeline.png?raw=true)
 
