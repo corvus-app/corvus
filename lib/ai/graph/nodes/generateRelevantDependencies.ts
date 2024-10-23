@@ -34,8 +34,7 @@ export async function generateRelevantDependencies(
     </question>
 
     If there are no relevant dependencies, do not respond. 
-    Otherwise, base your response on distinct dependencies listed only in the package.json file with no preamble or explanation.
-    If any two dependencies have words in common, do not list them both.
+    Otherwise, respond with no more than 3 dependencies listed only in the package.json file with no preamble or explanation.
     `
   );
 
