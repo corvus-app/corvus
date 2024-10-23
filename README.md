@@ -15,10 +15,16 @@ It is intended to accelerate the onboarding process and improve productivity of 
 
 **NOTE: This is a demo for Confluent's AI Day challenge and does not reflect the final product.**
 
+## Motivation
+I had the opportunity to experience working with less-experienced developers as the main contributor on a few projects in high school. As I was developing the core features of the project, I had to answer the questions of my juniors who did not understand how to navigate the codebase or google their questions. I assumed that many of their questions were trivial and could easily be answered within a couple of minutes of searching. I thought to myself, "How could I use AI to transfer domain knowledge to my juniors so I don't have to answer these questions and I can focus on developing the core features?". 
+
+I heard about how there were in-house co-pilot tools made by senior software developers that generated quality code (because it was based off of existing code made by the seniors) but there aren't any tools to help transfer their domain knowledge to juniors. And so now I'm here. 
 ## A Peek Inside
 **corvus** uses AI to mimic how someone reasons through a ticket and outputs its findings to the user. It works by identifying relevant internal information to the user's query and also searches for note-worthy external posts, blogs, and documentation if needed.
 
-**corvus** is **NOT** a co-pilot. It is a productivity tool. It will not generate new code for you and is grounded by the existing documentation and codebase. This is an intended design.
+**corvus** is **NOT** a co-pilot. It is a productivity tool. It will not generate new code for you and is grounded by the existing documentation and codebase. 
+
+Confluent is used mainly for its real-time data streaming capabilities so there are connectors to GitHub and MongoDB to retrieve commits in real-time and push said commits to a sink. I tried using Apache Flink statements to convert the commits to embeddings in real-time as well but I had a lot of trouble trying so I scrapped that idea in favor of using MongoDB triggers. 
 
 **corvus** is built on a multi-step RAG pipeline to ensure accuracy and relevancy. It uses ideas from the following papers:
 - [Corrective Retrieval Augmented Generation](https://arxiv.org/pdf/2401.15884)
@@ -29,7 +35,13 @@ It is intended to accelerate the onboarding process and improve productivity of 
 ![alt text](ragpipeline.png?raw=true)
 
 ## What's Ahead
+As a college freshman, I have not had the opportunity to work in industry and personally experience how a large codebase functions. I only had experience working on building internal administrative tools from the ground up at my high school. I would like to make integrations with multiple DevOps tools like Jira and Confluence. I've only heard of these tools from passing and personal experience with these tools would help me better understand how to improve this project further to work with larger codebases.
+
+Because I only had around 5 days to work on this, I was unable to improve the RAG pipeline to my standards. The reasoning capabilities of the pipeline right now are subpar and need a lot of testing to be done to improve it. Given more time, I would make the LLM break down the question further and supplement the question with more relevant search queries and documents.
+
+Goals:
 - Integration with Jira, Confluence, and other sources to improve accuracy and relevancy.
 - Perfecting the RAG pipeline to improve AI reasoning abilities.
 - Implementing more agents and agent frameworks from academia.
 - Testing to see how the AI performs under larger codebases and more sources.
+
