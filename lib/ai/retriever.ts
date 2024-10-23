@@ -15,10 +15,10 @@ const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
 });
 
 export const retriever = vectorStore.asRetriever({
-  k: 7,
-  //   searchType: "mmr", // Defaults to "similarity
-  //   searchKwargs: {
-  //     fetchK: 50,
-  //     lambda: 0.1,
-  //   },
+  k: 5,
+  searchType: "mmr", // Defaults to "similarity
+  searchKwargs: {
+    fetchK: 25,
+    lambda: 0.1,
+  },
 });
