@@ -22,10 +22,13 @@ import {
 
 const exampleQuestions = [
   "What is a crow?",
+  "What is corvus?",
   "How are users authenticated?",
   "How to add a function that gets commit content?",
-  "What are your business hours?",
-  "Can you explain your return policy?",
+  "Make a button that updates the github_commits table in MongoDB.",
+  "Add a new node to the LangGraph workflow.",
+  "How to add a new page called /about to the website?",
+  "Add new examples to the example questions in the chatbox.",
 ];
 
 export default function Chat({
@@ -57,7 +60,7 @@ export default function Chat({
           id: Date.now(),
           text: results.output
             ? results.output
-            : "Question cannot be answered. Please ask another question.",
+            : "Unrelated question. Please ask another question.",
           sender: "other" as const,
           traceback: results.tracebacks,
         };
