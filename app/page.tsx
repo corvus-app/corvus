@@ -1,8 +1,6 @@
 "use client";
 
 import Chat from "@/components/chat";
-import SignIn from "@/components/signIn";
-import SignOut from "@/components/signOut";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,9 +25,6 @@ export default function Home() {
         </Link>
       </span>
       <Chat />
-      <div className="flex gap-2">
-        <SignIn /> <SignOut />
-      </div>
     </div>
   );
 }
