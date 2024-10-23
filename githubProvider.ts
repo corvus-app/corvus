@@ -8,6 +8,14 @@
 import { OAuthConfig } from "next-auth/providers";
 import { GitHubEmail, GitHubProfile } from "next-auth/providers/github";
 
+/**
+ * A custom NextAuth.js provider for GitHub that allows you to pass in any valid
+ * scope parameter. This is useful if you want to request different permissions
+ * from the user.
+ *
+ * @param scope A string of space-separated scopes to request from the user.
+ * @returns The GitHub provider configuration.
+ */
 export default function GitHub(scope: string): OAuthConfig<GitHubProfile> {
   const baseUrl = "https://github.com";
   const apiBaseUrl = "https://api.github.com";

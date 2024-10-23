@@ -2,6 +2,13 @@
 
 import { auth } from "@/auth";
 
+/**
+ * Retrieves the content of a repository from a specified path.
+ *
+ * @param repoName - The name of the repository to retrieve content from.
+ * @param path - The path within the repository to retrieve content from.
+ * @returns The content of the specified repository path.
+ */
 export async function getRepoContent(repoName: string, path: string) {
   const session = await auth();
 

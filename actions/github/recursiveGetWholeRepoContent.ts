@@ -1,6 +1,13 @@
 import { isExcludedFile } from "@/lib/utils";
 import { getRepoContent } from "./getRepoContent";
 
+/**
+ * Recursively retrieves the entire content of a repository, including files and directories.
+ *
+ * @param repoName - The name of the repository to retrieve content from.
+ * @param content - An array containing the content of the current directory.
+ * @param data - An object to store the retrieved content.
+ */
 export async function recursiveGetWholeRepoContent(
   repoName: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
