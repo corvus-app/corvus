@@ -14,11 +14,22 @@ export async function rewriteQuery(
   console.log("---REWRITE QUERY---");
 
   const prompt = ChatPromptTemplate.fromTemplate(
-    `You are a question re-writer that converts an input question to a better version that is optimized
-    for vectorstore retrieval. Look at the initial and formulate an improved question.
-    
-    Here is the initial question:
-    
+    `You are a thought within a chain of thoughts designed to mention relevant links, GitHub commits and documents that should help with the question. 
+    You have expertise in rewriting questions to a better version that is optimized for web search. 
+    You will be given a question, the relevant technologies to the question, and the current state of the thought process.
+    Based on the relevant technologies and the current state of the thought process, rewrite the question to a better version that is optimized for web search.
+
+    Here are the relevant technologies:
+    <technologies>
+    {technologies}
+    </technologies>
+
+    Here is the current state of the thought process:
+    <context>
+    {context}
+    </context>
+
+    Here is the question:
     <question>
     {question}
     </question>
@@ -26,11 +37,23 @@ export async function rewriteQuery(
     Respond only with an improved question. Do not include any preamble or explanation.`
   );
 
-  // Construct the chain
   const chain = prompt.pipe(model).pipe(new StringOutputParser());
-  const betterQuestion = await chain.invoke({ question: state.question });
+  const question = await chain.invoke({
+    technologies: state.technologies,
+    context: state.context,
+    question: state.question,
+  });
+
+  console.log(question);
+  const traceback =
+    "---HALLUCINATION AND ANSWER GRADER---\n" +
+    "---DECISION: ANSWER DOES NOT RESOLVE QUESTION---\n" +
+    "---REWRITE QUERY---\n" +
+    state.question +
+    "\n";
 
   return {
-    question: betterQuestion,
+    question,
+    traceback,
   };
 }

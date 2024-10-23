@@ -1,5 +1,4 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { formatDocumentsAsString } from "langchain/util/document";
 import { GraphState, jsonModel } from "..";
 import { JsonOutputParser } from "@langchain/core/output_parsers";
 
@@ -13,17 +12,17 @@ export async function hallucinationGrader(state: typeof GraphState.State) {
   console.log("---HALLLUCINATION GRADER---");
 
   const prompt = ChatPromptTemplate.fromTemplate(
-    `You are a grader assessing whether an answer is grounded in / supported by a set of facts.
-    Here are the facts used as context to generate the answer:
+    `You are a thought within a chain of thoughts designed to mention relevant links, GitHub commits and documents that should help with the question.
+    You have expertise in assessing whether an answer is grounded in / supported by a set of facts.
 
+    Here are the facts used as context to generate the answer:
     <context>
     {context} 
     </context>
 
     Here is the answer:
-
     <answer>
-    {generation}
+    {answer}
     </answer>
 
     Give a binary score 'yes' or 'no' score to indicate whether the answer is grounded in / supported by a set of facts.
@@ -33,8 +32,8 @@ export async function hallucinationGrader(state: typeof GraphState.State) {
   const chain = prompt.pipe(jsonModel.pipe(new JsonOutputParser()));
 
   const grade: { score: string } = await chain.invoke({
-    context: formatDocumentsAsString(state.documents),
-    generation: state.generation,
+    context: state.context,
+    answer: state.answer,
   });
 
   if (grade.score === "yes") {

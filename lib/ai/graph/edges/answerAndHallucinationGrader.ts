@@ -9,7 +9,7 @@ import { hallucinationGrader } from "./hallucinationGrader";
  * @returns {Promise<"useful" | "not_useful" | "not_supported">} Whether the
  * generation is useful, not useful, or not supported.
  */
-export async function gradeHallucinationsAndUsefulness(
+export async function answerAndHallucinationsGrader(
   state: typeof GraphState.State
 ) {
   const hallucinationGrade = await hallucinationGrader(state);
